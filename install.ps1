@@ -1,4 +1,4 @@
-﻿# Русификатор Dawson Oaks Trailer Park
+# Русификатор Dawson Oaks Trailer Park
 #
 # Установка одной командой (PowerShell):
 #   irm https://raw.githubusercontent.com/demon3t/dawson_oaks_trailer_park_ru/main/install.ps1 | iex
@@ -10,7 +10,8 @@
 param(
     [string]$GameDir = "",
     [switch]$Uninstall,
-    [switch]$PauseAtEnd
+    [switch]$PauseAtEnd,
+    [string]$LocalRoot = ""  # папка репозитория (для install.bat); файл без BOM, читается как UTF-8
 )
 
 $RepoRaw = "https://raw.githubusercontent.com/demon3t/dawson_oaks_trailer_park_ru/main"
@@ -108,7 +109,8 @@ public static class DawsonRuPatch {
             $argsList = "-GameDir '$($GameDir -replace "'", "''")' -PauseAtEnd"
             if ($Uninstall) { $argsList += " -Uninstall" }
             if ($LocalRoot) {
-                $cmd = "& '$((Join-Path $LocalRoot 'install.ps1') -replace "'", "''")' $argsList"
+                $root = $LocalRoot -replace "'", "''"
+                $cmd = "& ([scriptblock]::Create([IO.File]::ReadAllText('$root\install.ps1'))) -LocalRoot '$root' $argsList"
             } else {
                 $cmd = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; & ([scriptblock]::Create((irm '$ScriptUrl'))) $argsList"
             }
@@ -193,5 +195,6 @@ public static class DawsonRuPatch {
     }
 }
 
-Invoke-DawsonRu -GameDir $GameDir -Uninstall:$Uninstall -LocalRoot $PSScriptRoot
+if ($PSScriptRoot) { $LocalRoot = $PSScriptRoot }
+Invoke-DawsonRu -GameDir $GameDir -Uninstall:$Uninstall -LocalRoot $LocalRoot
 if ($PauseAtEnd) { Write-Host ""; Read-Host "Нажмите Enter, чтобы закрыть окно" | Out-Null }
