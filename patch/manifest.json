@@ -1,0 +1,32 @@
+{
+  "files": [
+    {
+      "name": "GameAssembly.dll",
+      "path": "GameAssembly.dll",
+      "patch": "GameAssembly.dll.dpatch",
+      "original_sha256": "4EDA855DD5CE3B79F71D3BD8F4CF2486CA427403A9150AB3FA60CCC130560699",
+      "patched_sha256": "F4E5A4F13483A1FF0483776C0D063476BF874E15E85E412040BD1022A0AE3458"
+    },
+    {
+      "name": "resources.assets",
+      "path": "Dawson Oaks Trailer Park_Data/resources.assets",
+      "patch": "resources.assets.dpatch",
+      "original_sha256": "38E1BEAADFCC0B3B63E72074861E5385A66AE4F31A01AF71825506C042949A52",
+      "patched_sha256": "35B2981BBE8F2201C1BAF19B483282F3EB540CC9A3EA2EF8CAB5B605ED06CBB4"
+    },
+    {
+      "name": "globalgamemanagers",
+      "path": "Dawson Oaks Trailer Park_Data/globalgamemanagers",
+      "patch": "globalgamemanagers.dpatch",
+      "original_sha256": "02693EF764303ECD24D12A00769AE3841CFC42B5FFFCE96F7C91535EFED4208A",
+      "patched_sha256": "64DAC35D7B4BFB57F613D552178D71F7E58F8DB07A276B8248778133DFBEE5A3"
+    },
+    {
+      "name": "default_settings.json",
+      "path": "Dawson Oaks Trailer Park_Data/StreamingAssets/default_settings.json",
+      "patch": "default_settings.json.dpatch",
+      "original_sha256": "F768B951BC877E96A594A132D99ABC475DF0AED9905E303696AC6A3FEC8D46D8",
+      "patched_sha256": "ABB1DCBF569BCCBFBF4D2DFB9B673EE1C3917740F1ADFA17A81FACC483CDFB95"
+    }
+  ]
+}
