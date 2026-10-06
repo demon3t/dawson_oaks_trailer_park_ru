@@ -1,8 +1,8 @@
 # Русификатор Dawson Oaks Trailer Park
 
 Русский язык для игры [Dawson Oaks Trailer Park](https://store.steampowered.com/app/3640200/Dawson_Oaks_Trailer_Park/) (Steam).
-Устанавливается одной командой и добавляет в настройки игры новый язык «Русский».
-Переведены меню, настройки, роли, позывы, подсказки, предметы, телефон и обучение.
+Устанавливается одной командой и добавляет в настройки игры новый язык «Русский» (первым в списке).
+Переведены меню, настройки, позывы, подсказки, предметы, телефон и обучение. Названия ролей (Supervisor, Snitch, The Drunk…) оставлены как в оригинале.
 
 > **English:** Russian translation (localization mod) for Dawson Oaks Trailer Park.
 > Adds a new “Русский” language to the game settings; all original languages stay intact.

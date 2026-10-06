@@ -14,8 +14,9 @@
    названий подставляет "en". Патч заменяет это значение по умолчанию на само
    название, так что пункт "Русский" загружает Resources "Localization/Русский".
    Все существующие языки работают как раньше.
-4. default_settings.json — "Русский" добавляется в конец списка языков
-   (в конец, чтобы не сдвинуть индексы уже выбранных языков).
+4. default_settings.json — "Русский" добавляется первым в список языков
+   (номер 0 — язык по умолчанию для новых игроков; сдвиг номеров остальных
+   языков учитывает установщик).
 """
 import copy
 import json
@@ -172,7 +173,7 @@ def build_settings():
     if f'"{LANGUAGE_NAME}"' in items:
         sys.exit("default_settings.json: язык уже есть в оригинале")
     indent = re.search(r"\n(\s*)\"", items).group(1)
-    new_items = items.rstrip() + f',\n{indent}"{LANGUAGE_NAME}"'
+    new_items = f'\n{indent}"{LANGUAGE_NAME}",' + items
     text = text[:m.start(2)] + new_items + tail + text[m.end(3):]
     json.loads(text)  # проверка валидности
     with open(os.path.join(OUT_DIR, "default_settings.json"), "wb") as f:

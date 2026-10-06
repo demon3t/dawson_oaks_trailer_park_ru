@@ -21,7 +21,7 @@ function Invoke-DawsonRu {
     param([string]$GameDir, [switch]$Uninstall, [string]$LocalRoot)
 
     $ErrorActionPreference = "Stop"
-    $LanguageIndex = 10  # «Русский» — 11-й пункт в списке языков
+    $LanguageName = "Русский"
     $UserSettings = Join-Path $env:USERPROFILE "AppData\LocalLow\Striped Panda Studios\Dawson Oaks Trailer Park\settings.json"
     $TempDir = $null
 
@@ -81,15 +81,26 @@ public static class DawsonRuPatch {
         catch { return $false }
     }
 
-    # Выставить язык в пользовательских настройках игры (если файл уже есть)
-    function Set-UserLanguage([double]$value, [switch]$OnlyIfRussian) {
-        if (-not (Test-Path $UserSettings)) { return }
+    # Список языков из default_settings.json игры
+    function Get-LanguageList([string]$path) {
+        $json = [IO.File]::ReadAllText($path) | ConvertFrom-Json
+        return @($json.SettingsCategories.Game.settings.language.alternatives)
+    }
+
+    # Номер выбранного языка в пользовательских настройках игры
+    $LanguageRe = [regex]'("language"\s*:\s*\{[^{}]*?"value"\s*:\s*)([0-9.]+)'
+    function Get-UserLanguage {
+        if (-not (Test-Path $UserSettings)) { return $null }
+        $m = $LanguageRe.Match([IO.File]::ReadAllText($UserSettings))
+        if ($m.Success) { return [int][double]$m.Groups[2].Value } else { return $null }
+    }
+    function Set-UserLanguage([int]$index) {
+        if ($index -lt 0 -or -not (Test-Path $UserSettings)) { return }
         $text = [IO.File]::ReadAllText($UserSettings)
-        $m = ([regex]'("language"\s*:\s*\{[^{}]*?"value"\s*:\s*)([0-9.]+)').Match($text)
+        $m = $LanguageRe.Match($text)
         if (-not $m.Success) { return }
-        if ($OnlyIfRussian -and [double]$m.Groups[2].Value -lt $LanguageIndex) { return }
         $g = $m.Groups[2]
-        $text = $text.Substring(0, $g.Index) + $value.ToString("0.0", [Globalization.CultureInfo]::InvariantCulture) + $text.Substring($g.Index + $g.Length)
+        $text = $text.Substring(0, $g.Index) + ("{0}.0" -f $index) + $text.Substring($g.Index + $g.Length)
         [IO.File]::WriteAllText($UserSettings, $text, (New-Object Text.UTF8Encoding($false)))
     }
 
@@ -138,7 +149,12 @@ public static class DawsonRuPatch {
             }
         }
 
+        $SettingsFile = Join-Path $GameDir "Dawson Oaks Trailer Park_Data\StreamingAssets\default_settings.json"
+
         if ($Uninstall) {
+            # Запоминаем выбранный язык по названию: после удаления номера языков сдвинутся
+            $idx = Get-UserLanguage
+            $selected = if ($idx -ne $null) { (Get-LanguageList $SettingsFile)[$idx] } else { $null }
             foreach ($f in $manifest.files) {
                 $target = Join-Path $GameDir $f.path
                 $backup = "$target.bak"
@@ -148,7 +164,10 @@ public static class DawsonRuPatch {
                     Write-Host "  восстановлен $($f.name)"
                 }
             }
-            Set-UserLanguage 0 -OnlyIfRussian
+            if ($idx -ne $null) {
+                # «Русский» в оригинальном списке не найдётся -> English (0)
+                Set-UserLanguage ([Math]::Max([array]::IndexOf((Get-LanguageList $SettingsFile), $selected), 0))
+            }
             Write-Host ""
             Write-Host "Русификатор удалён." -ForegroundColor Green
             return
@@ -180,7 +199,7 @@ public static class DawsonRuPatch {
             Write-Host "  обновлён $($j.f.name)"
         }
 
-        Set-UserLanguage $LanguageIndex
+        Set-UserLanguage ([array]::IndexOf((Get-LanguageList $SettingsFile), $LanguageName))
         Write-Host ""
         if ($jobs.Count -eq 0) { Write-Host "Русификатор уже установлен." -ForegroundColor Green }
         else { Write-Host "Готово! Русский язык установлен." -ForegroundColor Green }

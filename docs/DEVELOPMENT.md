@@ -37,10 +37,10 @@ python tools/make_patch.py
 | --- | --- |
 | `Dawson Oaks Trailer Park_Data/resources.assets` | новый TextAsset `ru` (JSON с переводом); в TMP Settings добавлен глобальный fallback-шрифт с кириллицей |
 | `Dawson Oaks Trailer Park_Data/globalgamemanagers` | TextAsset зарегистрирован в Resources как `localization/Русский` |
-| `Dawson Oaks Trailer Park_Data/StreamingAssets/default_settings.json` | «Русский» добавлен в конец списка языков |
+| `Dawson Oaks Trailer Park_Data/StreamingAssets/default_settings.json` | «Русский» добавлен первым в список языков (номер 0 — язык по умолчанию для новых игроков) |
 | `GameAssembly.dll` | 7 байт по смещению `0x70B6B7` (см. ниже) |
 
-Установщик сохраняет оригиналы как `*.bak` и выставляет язык в
+Установщик сохраняет оригиналы как `*.bak` и выставляет язык (при удалении — возвращает прежний язык по названию, т.к. номера языков сдвигаются) в
 `%USERPROFILE%\AppData\LocalLow\Striped Panda Studios\Dawson Oaks Trailer Park\settings.json`.
 
 ### Патч GameAssembly.dll

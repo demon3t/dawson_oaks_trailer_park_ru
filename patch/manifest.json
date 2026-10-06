@@ -12,7 +12,7 @@
       "path": "Dawson Oaks Trailer Park_Data/resources.assets",
       "patch": "resources.assets.dpatch",
       "original_sha256": "38E1BEAADFCC0B3B63E72074861E5385A66AE4F31A01AF71825506C042949A52",
-      "patched_sha256": "35B2981BBE8F2201C1BAF19B483282F3EB540CC9A3EA2EF8CAB5B605ED06CBB4"
+      "patched_sha256": "BF251C823C11A83ADBBEC3CE9436DBA71C5B785EC102DED6496E817B435336DC"
     },
     {
       "name": "globalgamemanagers",
@@ -26,7 +26,7 @@
       "path": "Dawson Oaks Trailer Park_Data/StreamingAssets/default_settings.json",
       "patch": "default_settings.json.dpatch",
       "original_sha256": "F768B951BC877E96A594A132D99ABC475DF0AED9905E303696AC6A3FEC8D46D8",
-      "patched_sha256": "ABB1DCBF569BCCBFBF4D2DFB9B673EE1C3917740F1ADFA17A81FACC483CDFB95"
+      "patched_sha256": "8138F581995712C5CF025D5975BF7CF30E840AF6CD05FA1C01FFFB75A401C03E"
     }
   ]
 }
